@@ -6,12 +6,12 @@ import { GoogleAuthProvider, getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBvovLmGEPKWSqO9-r1Ko5h_UDP3HPhXCk",
-  authDomain: "cryptic-hunt-6e249.firebaseapp.com",
-  projectId: "cryptic-hunt-6e249",
-  storageBucket: "cryptic-hunt-6e249.appspot.com",
-  messagingSenderId: "748211008196",
-  appId: "1:748211008196:web:9df3d6e07c8235a9edcf91",
+  apiKey: "AIzaSyDluoN64Ybi4Xd8PjcN7qhw6ZIxU5fHxCM",
+  authDomain: "cryptic-hunt-2022.firebaseapp.com",
+  projectId: "cryptic-hunt-2022",
+  storageBucket: "cryptic-hunt-2022.appspot.com",
+  messagingSenderId: "907690053743",
+  appId: "1:907690053743:web:498ea3dc5f01e4fc6a7d9a",
 };
 
 // Initialize Firebase
