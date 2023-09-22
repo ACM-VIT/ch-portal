@@ -10,6 +10,7 @@ export default function Index() {
   const signIn = async () => {
     try {
       await signInWithPopup(auth, provider);
+      router.push("/home");
     } catch (error) {
       console.error("Error signin in", error);
     }
@@ -18,10 +19,6 @@ export default function Index() {
   if (loading) return <p>Loading...</p>;
 
   if (error) return <p>Error: {error.message}</p>;
-
-  if (user) {
-    router.push("/home");
-  }
 
   return (
     <div>
