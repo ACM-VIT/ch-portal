@@ -1,16 +1,24 @@
 import AuthWrapper from "@/components/AuthWrapper";
+import CountdownTimer from "@/components/CountdownTimer";
 import { useQuestionGroups } from "@/contexts/questions";
+import Link from "next/link";
 
 export default function Home() {
   const [questionGroups] = useQuestionGroups();
   return (
     <AuthWrapper>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-6xl font-bold">Welcome to the Next.js Starter</h1>
-      </div>
-      <pre>
-        <code>{JSON.stringify(questionGroups, null, 4)}</code>
-      </pre>
+      <CountdownTimer />
+      {questionGroups.map((group) => (
+        <Link key={group.id} href={`/questionGroup/${group.id}`}>
+          <div>
+            <h2>{group.name}</h2>
+            <p>
+              {group.numQuestionsSolvedQuestionGroup}/{group.numberOfQuestions}{" "}
+              questions solved
+            </p>
+          </div>
+        </Link>
+      ))}
     </AuthWrapper>
   );
 }
