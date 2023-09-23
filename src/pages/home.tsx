@@ -114,7 +114,9 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <ChevronDoubleRightIcon className="h-6 w-6" />
+                  <Link href={`/questionGroup/${group.id}`}>
+                    <ChevronDoubleRightIcon className="h-6 w-6" />
+                  </Link>
                 </div>
               ))}
             </div>
