@@ -130,6 +130,7 @@ export function QuestionContextProvider({ children }: { children: ReactNode }) {
           qgStorage[1](json);
           // update local storage
           localStorage.setItem("questionGroups", JSON.stringify(json));
+          window.location.reload();
         }
       }
     }
