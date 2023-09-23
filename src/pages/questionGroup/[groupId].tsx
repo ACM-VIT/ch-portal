@@ -42,6 +42,7 @@ export default function QuestionGroup() {
   const notify = (message: string) => toast(message);
 
   const [seq, setSeq] = useState(1);
+  const [isSequence, setIsSequence] = useState(false);
 
   useEffect(() => {
     async function fetchGroup() {
@@ -58,6 +59,8 @@ export default function QuestionGroup() {
       const data = await res.json();
       console.log(data)
       setQuestionGroupDetails(data);
+      setSeq(data.questions[0].seq)
+      setIsSequence(data.isSequence)
     }
 
     fetchGroup();
@@ -76,31 +79,31 @@ export default function QuestionGroup() {
   return (
     <AuthWrapper>
       <h1>Question Group {groupId}</h1>
-      <button onClick={handlePrev} disabled={seq == 1}>
+      <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
         Prev
       </button>
       {questionGroupDetails.questions && (
         <QuestionDetails
-          questionDetails={questionGroupDetails.questions.find(
-            (question) => question.seq == seq,
-          ) ? questionGroupDetails.questions.find(
-            (question) => question.seq == seq,
-          ) : {
-            hint: null,
-            costOfHint: null,
-            description: "",
-            pointsAwarded: 0,
-            seq: 0,
-            title: "",
-            images: [],
-            solved: false,
-          }}
+          questionDetails={
+            questionGroupDetails.questions.find(
+              (question) => question.seq == seq,
+            ) ?? {
+              hint: null,
+              costOfHint: null,
+              description: "",
+              pointsAwarded: 0,
+              seq: 0,
+              title: "",
+              images: [],
+              solved: false,
+            }
+          }
           questionGroupId={groupId as string}
         />
       )}
       <button
         onClick={handleNext}
-        disabled={seq == questionGroupDetails.numberOfQuestions}
+        disabled={seq == questionGroupDetails.numberOfQuestions || isSequence}
       >
         Next
       </button>
