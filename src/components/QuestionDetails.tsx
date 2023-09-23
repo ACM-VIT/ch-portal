@@ -110,10 +110,20 @@ export default function QuestionDetails({
     }
   }
 
+  // ... [the rest of your imports and functions remain unchanged]
+
   return (
     <div className={styles.tortia2}>
       <header className={styles.title}>{title}</header>
-      <article className={styles.description}>{description}</article>
+
+      <article className={styles.description}>
+        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadsdgfsfsdf
+        dsdfsdfsdfsdf sd fsdfsdfsdffdgsdfgdsfgdsffg sdfsdfsdfdsf sdfsdfsdfdsf
+        sdfsdfsdfsdf Lorem ipsum dolor sit amet consectetur adipisicing elit. At
+        dolorem ex quisquam nihil qui recusandae excepturi necessitatibus.
+        Laudantium, ab ipsa omnis praesentium voluptatem quam labore, repellat
+        quia nisi, magnam quo?{description}
+      </article>
 
       <section className={styles.info_section}>
         <div>
@@ -135,18 +145,16 @@ export default function QuestionDetails({
       </section>
 
       <section className={styles.action_section}>
-        <div className={styles.input_section}>
-          <input
-            type="text"
-            placeholder="Answer"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            className={styles.answer_input}
-          />
-          <button className={styles.action_btn} onClick={handleSolve}>
-            ✅ Solve
-          </button>
-        </div>
+        <input
+          type="text"
+          placeholder="Answer"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          className={styles.answer_input}
+        />
+        <button className={styles.action_btn} onClick={handleSolve}>
+          ✅ Solve
+        </button>
         <button className={styles.hint_btn} onClick={buyHint}>
           💡 Buy Hint
         </button>
