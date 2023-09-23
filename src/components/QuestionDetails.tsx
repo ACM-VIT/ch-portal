@@ -2,6 +2,7 @@ import { auth } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface Question {
   hint: string | null;
@@ -27,6 +28,7 @@ export default function QuestionDetails({ questionDetails, questionGroupId }: { 
     images,
     solved,
   } = questionDetails;
+  const router = useRouter();
   const notify = (message: string) => toast(message);
 
   async function buyHint() {
@@ -42,6 +44,14 @@ export default function QuestionDetails({ questionDetails, questionGroupId }: { 
       body: JSON.stringify({ questionGroupId, seq }),
     });
     const data = await response.json();
+
+    if (data.message && data.message === "Question does not have a hint") {
+      notify("Question does not have a hint");
+    } else {
+      notify("Hint bought");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      window.location.reload();
+    }
 
     console.log(data);
   }
@@ -67,6 +77,22 @@ export default function QuestionDetails({ questionDetails, questionGroupId }: { 
     console.log(data);
     if (data.isCorrect) {
       notify("Correct answer");
+      const res2 = await fetch(`${backendUrl}/questiongroups`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      const json = await res2.json();
+
+      localStorage.setItem("questionGroups", JSON.stringify(json));
+
+      const currentQuestionGroup = json.find((questionGroup: any) => questionGroup.id === questionGroupId);
+
+      if (!currentQuestionGroup) {
+        router.push("/home");
+      }
       // Wait for 2 seconds
       await new Promise((resolve) => setTimeout(resolve, 2000));
       window.location.reload();
