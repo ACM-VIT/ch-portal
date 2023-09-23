@@ -6,12 +6,40 @@ import { toast } from "react-toastify";
 import { auth } from "@/lib/firebase";
 import QuestionDetails from "@/components/QuestionDetails";
 
+interface Question {
+  hint: string | null;
+  costOfHint: number | null;
+  description: string;
+  pointsAwarded: number;
+  seq: number;
+  title: string;
+  images: string[];
+  solved: boolean;
+}
+interface QuestionGroup {
+  id: string;
+  name: string;
+  numberOfQuestions: number;
+  description: string;
+  isSequence: boolean;
+  minimumPhaseScore: number;
+  questions: Question[];
+}
+
 export default function QuestionGroup() {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
   const { groupId } = router.query;
-  const [questionGroupDetails, setQuestionGroupDetails] = useState({});
-  const notify = (message) => toast(message);
+  const [questionGroupDetails, setQuestionGroupDetails] = useState<QuestionGroup>({
+    id: "",
+    name: "",
+    numberOfQuestions: 0,
+    description: "",
+    isSequence: false,
+    minimumPhaseScore: 0,
+    questions: [],
+  });
+  const notify = (message: string) => toast(message);
 
   const [seq, setSeq] = useState(1);
 
@@ -28,6 +56,7 @@ export default function QuestionGroup() {
         },
       });
       const data = await res.json();
+      console.log(data)
       setQuestionGroupDetails(data);
     }
 
@@ -54,8 +83,19 @@ export default function QuestionGroup() {
         <QuestionDetails
           questionDetails={questionGroupDetails.questions.find(
             (question) => question.seq == seq,
-          )}
-          questionGroupId={groupId}
+          ) ? questionGroupDetails.questions.find(
+            (question) => question.seq == seq,
+          ) : {
+            hint: null,
+            costOfHint: null,
+            description: "",
+            pointsAwarded: 0,
+            seq: 0,
+            title: "",
+            images: [],
+            solved: false,
+          }}
+          questionGroupId={groupId as string}
         />
       )}
       <button

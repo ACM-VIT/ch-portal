@@ -3,7 +3,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export default function QuestionDetails({ questionDetails, questionGroupId }) {
+interface Question {
+  hint: string | null;
+  costOfHint: number | null;
+  description: string;
+  pointsAwarded: number;
+  seq: number;
+  title: string;
+  images: string[];
+  solved: boolean;
+}
+
+export default function QuestionDetails({ questionDetails, questionGroupId }: { questionDetails: Question, questionGroupId: string }) {
   const [user, loading, error] = useAuthState(auth);
   const [answer, setAnswer] = useState("");
   const {
@@ -79,7 +90,8 @@ export default function QuestionDetails({ questionDetails, questionGroupId }) {
           </div>
           <div className="question-details__seq">{seq}</div>
           {images.map((image) => (
-            <img src={image} alt="question" />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={image} alt="question" key={image} />
           ))}
 
           <div>
