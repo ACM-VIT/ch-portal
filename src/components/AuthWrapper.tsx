@@ -5,8 +5,9 @@ import { useState, useEffect, ReactNode } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function AuthWrapper({ children }: { children: ReactNode }) {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, firebaseLoading, error] = useAuthState(auth);
   const [isWhitelisted, setIsWhitelisted] = useState(false);
+  const [whiteListLoading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,12 +17,14 @@ export default function AuthWrapper({ children }: { children: ReactNode }) {
       const token = await user.getIdToken();
       const isWhitelisted = await checkWhitelist(token);
       setIsWhitelisted(isWhitelisted);
+      setLoading(false);
     }
 
     check();
   }, [user]);
 
-  if (loading) return <p>Loading...</p>;
+  if (firebaseLoading) return <p>Checking auth status...</p>;
+  if (whiteListLoading) return <p>Checking access(checkin) status...</p>;
 
   if (error) return <p>Error: {error.message}</p>;
 

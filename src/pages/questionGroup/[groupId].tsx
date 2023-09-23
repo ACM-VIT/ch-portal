@@ -59,7 +59,7 @@ export default function QuestionGroup() {
       const data = await res.json();
       console.log(data)
       setQuestionGroupDetails(data);
-      setSeq(data.questions[0].seq)
+      setSeq(data.questions[data.numQuestionsSolvedQuestionGroup].seq)
       setIsSequence(data.isSequence)
     }
 
