@@ -11,7 +11,7 @@ export default function Index() {
   const signIn = async () => {
     try {
       await signInWithPopup(auth, provider);
-      router.push("/home");
+      router.push("/team");
     } catch (error) {
       console.error("Error signin in", error);
     }

@@ -22,13 +22,14 @@ export default function Team() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const json = await response.json();
+        console.log(json);
         setLoading(false);
-        if (json.teamId !== null) {
+        if (json.id !== null) {
           alert("You are already in a team!");
-          window.location.href = "/team";
+          window.location.href = "/home";
         }
       }
     }
@@ -68,7 +69,7 @@ export default function Team() {
               onClick={async () => {
                 if (!user || typeof user === "undefined")
                   return alert(
-                    "You are not logged in. please go to /login page"
+                    "You are not logged in. please go to /login page",
                   );
                 const token = await user.getIdToken();
                 const team = await createTeamRequest(teamName, token);
@@ -93,7 +94,7 @@ export default function Team() {
               onClick={async () => {
                 if (!user) {
                   return alert(
-                    "You are not logged in. please go to /login page"
+                    "You are not logged in. please go to /login page",
                   );
                 }
                 const token = await user.getIdToken();
@@ -119,7 +120,7 @@ interface Team {
 
 async function createTeamRequest(
   teamName: string,
-  token: string
+  token: string,
 ): Promise<Team> {
   const backendUrl = process.env.NEXT_PUBLIC_API_URL as string;
 

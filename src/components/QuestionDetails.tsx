@@ -51,9 +51,10 @@ export default function QuestionDetails({
       body: JSON.stringify({ questionGroupId, seq }),
     });
     const data = await response.json();
+    console.log(data);
 
-    if (data.message && data.message === "Question does not have a hint") {
-      notify("Question does not have a hint");
+    if (data.message) {
+      notify(data.message);
     } else {
       notify("Hint bought");
       await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -96,7 +97,7 @@ export default function QuestionDetails({
       localStorage.setItem("questionGroups", JSON.stringify(json));
 
       const currentQuestionGroup = json.find(
-        (questionGroup: any) => questionGroup.id === questionGroupId
+        (questionGroup: any) => questionGroup.id === questionGroupId,
       );
 
       if (!currentQuestionGroup) {
@@ -116,14 +117,7 @@ export default function QuestionDetails({
     <div className={styles.tortia2}>
       <header className={styles.title}>{title}</header>
 
-      <article className={styles.description}>
-        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadsdgfsfsdf
-        dsdfsdfsdfsdf sd fsdfsdfsdffdgsdfgdsfgdsffg sdfsdfsdfdsf sdfsdfsdfdsf
-        sdfsdfsdfsdf Lorem ipsum dolor sit amet consectetur adipisicing elit. At
-        dolorem ex quisquam nihil qui recusandae excepturi necessitatibus.
-        Laudantium, ab ipsa omnis praesentium voluptatem quam labore, repellat
-        quia nisi, magnam quo?{description}
-      </article>
+      <article className={styles.description}>{description}</article>
 
       <section className={styles.info_section}>
         <div>
