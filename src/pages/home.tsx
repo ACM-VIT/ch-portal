@@ -3,12 +3,14 @@ import CountdownTimer from "@/components/CountdownTimer";
 import { useQuestionGroups } from "@/contexts/questions";
 import Link from "next/link";
 import style from "./home.module.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
 
 export default function Home() {
+  const [user, loading, error] = useAuthState(auth);
   const [questionGroups] = useQuestionGroups();
-  if (!questionGroups) {
-    return <div>loading...</div>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <div className="tortia-holder">
       <div className="tortia">

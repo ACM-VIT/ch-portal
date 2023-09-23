@@ -139,6 +139,12 @@ export default function Team() {
                   }
                   const token = await user.getIdToken();
                   const team = await joinTeamRequest(joinCode, token);
+                  if (typeof team === "string") {
+                    notify(team);
+                    // Wait 2 seconds
+                    await new Promise((resolve) => setTimeout(resolve, 2000));
+                    return window.location.reload();
+                  }
                   console.log(team);
                   notify(`Team joined with team name ${team.name}`);
                   // Wait for 2 seconds
@@ -190,7 +196,7 @@ async function joinTeamRequest(joinCode: string, token: string): Promise<Team> {
   const backendUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
   // Send a request to create a team
-  const res = await fetch(`${backendUrl}/teams/join`, {
+  const res = await fetch(`${backendUrl}/teams/jointeam`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -198,6 +204,9 @@ async function joinTeamRequest(joinCode: string, token: string): Promise<Team> {
     },
     body: JSON.stringify({ teamcode: joinCode }),
   });
-  const json = (await res.json()) as Team;
-  return json;
+  const json = await res.json();
+  if (json.message) {
+    return json.message;
+  }
+  return json as Team;
 }

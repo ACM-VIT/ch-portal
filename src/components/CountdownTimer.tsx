@@ -7,9 +7,11 @@ function CountdownTimer() {
 
   useEffect(() => {
     // Retrieve the target time from localStorage
-    const shittyTime = JSON.parse(
-      localStorage.getItem("liveConfig") as string,
-    ).time;
+    const liveConfigData = localStorage.getItem("liveConfig") as string;
+    if (!liveConfigData) {
+      return;
+    }
+    const shittyTime = JSON.parse(liveConfigData).startTime;
     if (!shittyTime) {
       return;
     }
@@ -24,7 +26,7 @@ function CountdownTimer() {
       if (timeDifference > 0) {
         const hours = Math.floor(timeDifference / (1000 * 60 * 60));
         const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60),
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
         );
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
