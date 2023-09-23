@@ -101,17 +101,19 @@ export default function QuestionGroup() {
               questionGroupId={groupId as string}
             />
           )}
-          <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
-            Prev
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={
-              seq == questionGroupDetails.numberOfQuestions || isSequence
-            }
-          >
-            Next
-          </button>
+          <div className="button-container">
+            <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
+              Prev
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={
+                seq == questionGroupDetails.numberOfQuestions || isSequence
+              }
+            >
+              Next
+            </button>
+          </div>
         </AuthWrapper>
       </div>
     </div>

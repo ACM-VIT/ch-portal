@@ -6,7 +6,7 @@
 .tortia2 {
     width: 400px;
     background-color: #0f0e0e;
-    padding: 20px;
+    padding: 10px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@
     scrollbar-color: #EF4136 #0f0e0e;
     margin-bottom: 20px;
     word-wrap: break-word;
-    max-height: 200px;
+    max-height: 400px;
 }
 
 .description::-webkit-scrollbar {

@@ -113,3 +113,41 @@ body {
   line-height: 120%;
   letter-spacing: -0.24px;
 }
+
+/* Container for the buttons */
+.button-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  /* To put buttons side by side */
+  background-color: #333;
+  /* Dark background color */
+  padding: 5px;
+  /* Add some padding for spacing */
+  border-radius: 1px;
+  /* Rounded corners for the container */
+}
+
+/* Style for the buttons */
+.button-container button {
+  flex-grow: 1;
+  /* Make buttons stretch to fill the container */
+  padding: 10px;
+  /* Adjust padding as needed */
+  background-color: #555;
+  /* Darker button background */
+  color: #fff;
+  /* Text color */
+  border: none;
+  /* Remove button border */
+  cursor: pointer;
+  /* Show pointer cursor on hover */
+}
+
+/* Disable the buttons when they are disabled */
+.button-container button:disabled {
+  background-color: rgb(15, 14, 14);
+  /* Darker background color for disabled buttons */
+  cursor: not-allowed;
+  /* Change cursor for disabled buttons */
+}
