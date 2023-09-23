@@ -2,7 +2,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { auth, provider } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
+import Image from "next/image";
 import owl from "../../public/owl.png";
+import Head from "next/head";
 
 export default function Index() {
   const [user, loading, error] = useAuthState(auth, {});
@@ -17,23 +19,44 @@ export default function Index() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) {
+    return (
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">Error: {error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="tortia-holder">
-      <div className="tortia">
-        <div className="t1">Let the Hunt begin!</div>
-        <div className="s1">Web client for cryptic hunt 2023</div>
-        <br />
-        <img src={`/owl.png`} alt="" />
-        <div>
-          <button onClick={signIn} className="btn">
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col justify-center items-center h-full gap-3">
+          <p className="text-2xl font-bold">Let the Hunt Begin!</p>
+          <div className="text-xl">Web Client for Cryptic Hunt 23</div>
+          <Image src={owl} alt="cute cryptic hunt owl" />
+          <button
+            onClick={signIn}
+            className="bg-orange-400 px-4 py-2 rounded-md text-center"
+          >
             Sign in with Google
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

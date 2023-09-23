@@ -23,10 +23,35 @@ export default function AuthWrapper({ children }: { children: ReactNode }) {
     check();
   }, [user]);
 
-  if (firebaseLoading) return <p>Checking auth status...</p>;
-  if (whiteListLoading) return <p>Checking access(checkin) status...</p>;
+  if (firebaseLoading) {
+    return (
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-  if (error) return <p>Error: {error.message}</p>;
+  if (whiteListLoading) {
+    return (
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">Checking Auth Status</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">Error: {error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     router.push("/login");
@@ -37,8 +62,11 @@ export default function AuthWrapper({ children }: { children: ReactNode }) {
     children
   ) : (
     <>
-      <button onClick={() => auth.signOut()}>Sign Out</button>
-      <p>Sorry, you are not whitelisted.</p>
+      <div className="bg-neutral-900 h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-3xl font-bold">You have not been whitelisted</p>
+        </div>
+      </div>
     </>
   );
 }

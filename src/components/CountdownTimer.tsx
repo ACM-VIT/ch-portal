@@ -7,9 +7,11 @@ function CountdownTimer() {
 
   useEffect(() => {
     // Retrieve the target time from localStorage
-    const shittyTime = JSON.parse(
-      localStorage.getItem("liveConfig") as string,
-    ).time;
+    const liveConfigData = localStorage.getItem("liveConfig") as string;
+    if (!liveConfigData) {
+      return;
+    }
+    const shittyTime = JSON.parse(liveConfigData).time;
     if (!shittyTime) {
       return;
     }
@@ -18,13 +20,12 @@ function CountdownTimer() {
 
     const updateCountdown = () => {
       const now = new Date();
-      console.log(now.toISOString());
-      const timeDifference = storedTime - now; // in milliseconds
+      const timeDifference = storedTime.getTime() - now.getTime(); // in milliseconds
 
       if (timeDifference > 0) {
         const hours = Math.floor(timeDifference / (1000 * 60 * 60));
         const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60),
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
         );
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
@@ -49,10 +50,23 @@ function CountdownTimer() {
   }, []);
 
   return (
-    <div className="countdown-timer">
-      <div className="time text-3xl">
-        {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
-        {String(seconds).padStart(2, "0")}
+    // <div className="">
+    //   <div className="text-3xl">
+    //     {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
+    //     {String(seconds).padStart(2, "0")}
+    //   </div>
+    // </div>
+    <div className="flex flex-row justify-around items-center max-w-sm w-full">
+      <div className="p-3 border rounded-md">
+        <p className="text-3xl">{String(hours).padStart(2, "0")}</p>
+      </div>
+      <p className="text-3xl">:</p>
+      <div className="p-3 border rounded-md">
+        <p className="text-3xl">{String(minutes).padStart(2, "0")}</p>
+      </div>
+      <p className="text-3xl">:</p>
+      <div className="p-3 border rounded-md">
+        <p className="text-3xl">{String(seconds).padStart(2, "0")}</p>
       </div>
     </div>
   );
