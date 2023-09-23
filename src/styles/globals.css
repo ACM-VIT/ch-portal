@@ -1,3 +1,115 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 343px;
+  height: 42.188px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #EF4136 0%, #FF7A01 100%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.tortia-holder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.tortia {
+  width: 420px;
+  background-color: rgb(15, 14, 14);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+
+  gap: 20px;
+}
+
+.t1 {
+  color: #FCF3C5;
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  /* 42px */
+  letter-spacing: -0.56px;
+}
+
+.s1 {
+  color: #FCF3C5;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  /* 21px */
+  letter-spacing: -0.28px;
+}
+
+.quesdiv {
+  display: flex;
+  width: 343px;
+  height: 56px;
+  padding: 0px 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  border-radius: 4px;
+  border: 1px solid #F26038;
+
+}
+
+.qh2 {
+  color: #FCF3C5;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  /* 16.8px */
+  letter-spacing: -0.28px;
+}
+
+.qp {
+  color: #FFF;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.24px;
+}

@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import styles from "./questions.module.css";
 
 interface Question {
   hint: string | null;
@@ -15,7 +16,13 @@ interface Question {
   solved: boolean;
 }
 
-export default function QuestionDetails({ questionDetails, questionGroupId }: { questionDetails: Question, questionGroupId: string }) {
+export default function QuestionDetails({
+  questionDetails,
+  questionGroupId,
+}: {
+  questionDetails: Question;
+  questionGroupId: string;
+}) {
   const [user, loading, error] = useAuthState(auth);
   const [answer, setAnswer] = useState("");
   const {
@@ -83,12 +90,14 @@ export default function QuestionDetails({ questionDetails, questionGroupId }: { 
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      });
       const json = await res2.json();
 
       localStorage.setItem("questionGroups", JSON.stringify(json));
 
-      const currentQuestionGroup = json.find((questionGroup: any) => questionGroup.id === questionGroupId);
+      const currentQuestionGroup = json.find(
+        (questionGroup: any) => questionGroup.id === questionGroupId
+      );
 
       if (!currentQuestionGroup) {
         router.push("/home");
@@ -102,39 +111,46 @@ export default function QuestionDetails({ questionDetails, questionGroupId }: { 
   }
 
   return (
-    <div className="question-details">
-      {solved ? (
-        <div className="question-details__solved">Solved</div>
-      ) : (
-        <>
-          <div className="question-details__title">{title}</div>
-          <div className="question-details__description">{description}</div>
-          <div className="question-details__hint">{hint}</div>
-          <div className="question-details__cost-of-hint">{costOfHint}</div>
-          <div className="question-details__points-awarded">
-            {pointsAwarded}
-          </div>
-          <div className="question-details__seq">{seq}</div>
-          {images.map((image) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt="question" key={image} />
-          ))}
+    <div className={styles.tortia2}>
+      <header className={styles.title}>{title}</header>
+      <article className={styles.description}>{description}</article>
 
-          <div>
-            Buy hint
-            <button onClick={buyHint}>Buy</button>
-          </div>
+      <section className={styles.info_section}>
+        <div>
+          <strong>Hint:</strong>
+          <span className={styles.info}>{hint}</span>
+        </div>
+        <div>
+          <strong>Cost:</strong>
+          <span className={styles.info}>{costOfHint}</span>
+        </div>
+        <div>
+          <strong>Points:</strong>
+          <span className={styles.info}>{pointsAwarded}</span>
+        </div>
+        <div>
+          <strong>Part:</strong>
+          <span className={styles.info}>{seq}</span>
+        </div>
+      </section>
 
+      <section className={styles.action_section}>
+        <div className={styles.input_section}>
           <input
             type="text"
             placeholder="Answer"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
+            className={styles.answer_input}
           />
-
-          <button onClick={handleSolve}>Solve</button>
-        </>
-      )}
+          <button className={styles.action_btn} onClick={handleSolve}>
+            ✅ Solve
+          </button>
+        </div>
+        <button className={styles.hint_btn} onClick={buyHint}>
+          💡 Buy Hint
+        </button>
+      </section>
     </div>
   );
 }

@@ -30,15 +30,16 @@ export default function QuestionGroup() {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
   const { groupId } = router.query;
-  const [questionGroupDetails, setQuestionGroupDetails] = useState<QuestionGroup>({
-    id: "",
-    name: "",
-    numberOfQuestions: 0,
-    description: "",
-    isSequence: false,
-    minimumPhaseScore: 0,
-    questions: [],
-  });
+  const [questionGroupDetails, setQuestionGroupDetails] =
+    useState<QuestionGroup>({
+      id: "",
+      name: "",
+      numberOfQuestions: 0,
+      description: "",
+      isSequence: false,
+      minimumPhaseScore: 0,
+      questions: [],
+    });
   const notify = (message: string) => toast(message);
 
   const [seq, setSeq] = useState(1);
@@ -57,10 +58,10 @@ export default function QuestionGroup() {
         },
       });
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       setQuestionGroupDetails(data);
-      setSeq(data.questions[data.numQuestionsSolvedQuestionGroup].seq)
-      setIsSequence(data.isSequence)
+      setSeq(data.questions[data.numQuestionsSolvedQuestionGroup].seq);
+      setIsSequence(data.isSequence);
     }
 
     fetchGroup();
@@ -77,36 +78,42 @@ export default function QuestionGroup() {
   }
 
   return (
-    <AuthWrapper>
-      <h1>Question Group {groupId}</h1>
-      <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
-        Prev
-      </button>
-      {questionGroupDetails.questions && (
-        <QuestionDetails
-          questionDetails={
-            questionGroupDetails.questions.find(
-              (question) => question.seq == seq,
-            ) ?? {
-              hint: null,
-              costOfHint: null,
-              description: "",
-              pointsAwarded: 0,
-              seq: 0,
-              title: "",
-              images: [],
-              solved: false,
+    <div className="tortia-holder">
+      <div className="tortia">
+        <AuthWrapper>
+          {/* <h1>Question Group {groupId}</h1> */}
+          {questionGroupDetails.questions && (
+            <QuestionDetails
+              questionDetails={
+                questionGroupDetails.questions.find(
+                  (question) => question.seq == seq
+                ) ?? {
+                  hint: null,
+                  costOfHint: null,
+                  description: "",
+                  pointsAwarded: 0,
+                  seq: 0,
+                  title: "",
+                  images: [],
+                  solved: false,
+                }
+              }
+              questionGroupId={groupId as string}
+            />
+          )}
+          <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
+            Prev
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={
+              seq == questionGroupDetails.numberOfQuestions || isSequence
             }
-          }
-          questionGroupId={groupId as string}
-        />
-      )}
-      <button
-        onClick={handleNext}
-        disabled={seq == questionGroupDetails.numberOfQuestions || isSequence}
-      >
-        Next
-      </button>
-    </AuthWrapper>
+          >
+            Next
+          </button>
+        </AuthWrapper>
+      </div>
+    </div>
   );
 }
