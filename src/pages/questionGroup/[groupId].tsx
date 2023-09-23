@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-toastify";
 import { auth } from "@/lib/firebase";
 import QuestionDetails from "@/components/QuestionDetails";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 interface Question {
   hint: string | null;
@@ -77,11 +78,77 @@ export default function QuestionGroup() {
     setSeq(seq - 1);
   }
 
+  function back() {
+    router.push("/home");
+  }
+
   return (
-    <div className="tortia-holder">
-      <div className="tortia">
-        <AuthWrapper>
-          {/* <h1>Question Group {groupId}</h1> */}
+    // <div className="tortia-holder">
+    //   <div className="tortia">
+    //     <AuthWrapper>
+    //       {/* <h1>Question Group {groupId}</h1> */}
+    //       {questionGroupDetails.questions && (
+    //         <QuestionDetails
+    //           questionDetails={
+    //             questionGroupDetails.questions.find(
+    //               (question) => question.seq == seq
+    //             ) ?? {
+    //               hint: null,
+    //               costOfHint: null,
+    //               description: "",
+    //               pointsAwarded: 0,
+    //               seq: 0,
+    //               title: "",
+    //               images: [],
+    //               solved: false,
+    //             }
+    //           }
+    //           questionGroupId={groupId as string}
+    //         />
+    //       )}
+    //       <div className="button-container">
+    //         <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
+    //           Prev
+    //         </button>
+    //         <button
+    //           onClick={handleNext}
+    //           disabled={
+    //             seq == questionGroupDetails.numberOfQuestions || isSequence
+    //           }
+    //         >
+    //           Next
+    //         </button>
+    //       </div>
+    //     </AuthWrapper>
+    //   </div>
+    // </div>
+    <AuthWrapper>
+      <div className="bg-neutral-900 h-screen p-5">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-row items-center gap-5">
+            <ChevronLeftIcon className="h-6 w-6" onClick={() => back()} />
+            <p className="text-2xl font-bold">{questionGroupDetails.name}</p>
+          </div>
+          <hr />
+          <div className="flex flex-row justify-between">
+            <button
+              onClick={handlePrev}
+              disabled={seq == 1 || isSequence}
+              className="disabled:text-white/25"
+            >
+              <ChevronLeftIcon className="h-6 w-6" />
+            </button>
+            <p className="text-2xl font-bold">{seq}</p>
+            <button
+              onClick={handleNext}
+              className="disabled:text-white/25"
+              disabled={
+                seq == questionGroupDetails.numberOfQuestions || isSequence
+              }
+            >
+              <ChevronRightIcon className="h-6 w-6" />
+            </button>
+          </div>
           {questionGroupDetails.questions && (
             <QuestionDetails
               questionDetails={
@@ -101,21 +168,8 @@ export default function QuestionGroup() {
               questionGroupId={groupId as string}
             />
           )}
-          <div className="button-container">
-            <button onClick={handlePrev} disabled={seq == 1 || isSequence}>
-              Prev
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={
-                seq == questionGroupDetails.numberOfQuestions || isSequence
-              }
-            >
-              Next
-            </button>
-          </div>
-        </AuthWrapper>
+        </div>
       </div>
-    </div>
+    </AuthWrapper>
   );
 }
