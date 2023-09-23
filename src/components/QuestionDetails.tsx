@@ -226,24 +226,32 @@ export default function QuestionDetails({
             </div>
           )}
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="answer">Enter Text</label>
-            <div className="flex flex-row gap-1 w-full">
-              <input
-                type="text"
-                name="answer"
-                value={answer}
-                className="p-2 rounded-md text-black w-2/3"
-                onChange={(e) => setAnswer(e.target.value)}
-              />
-              <button
-                onClick={handleSolve}
-                className="flex flex-row justify-center items-center bg-red-700 rounded-md w-1/3"
-              >
-                <PaperAirplaneIcon className="h-full w-7" />
-              </button>
+          {solved ? (
+            <div className="flex flex-col gap-2">
+              <p className="text-2xl text-center">
+                Your team has already solved this question
+              </p>
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <label htmlFor="answer">Enter Text</label>
+              <div className="flex flex-row gap-1 w-full">
+                <input
+                  type="text"
+                  name="answer"
+                  value={answer}
+                  className="p-2 rounded-md text-black w-2/3"
+                  onChange={(e) => setAnswer(e.target.value)}
+                />
+                <button
+                  onClick={handleSolve}
+                  className="flex flex-row justify-center items-center bg-red-700 rounded-md w-1/3"
+                >
+                  <PaperAirplaneIcon className="h-full w-7" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
