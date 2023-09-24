@@ -133,14 +133,11 @@ export function QuestionContextProvider({ children }: { children: ReactNode }) {
           window.location.reload();
         }
       }
-
-      const delay = 45;
-
-      setTimeout(system, delay * 1000);
     }
-
-    system();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const secondsToWait = 60;
+    // starting system interval
+    const interval = setInterval(system, secondsToWait * 1000);
+    return () => clearInterval(interval);
   }, [user]);
   return (
     <questionsContext.Provider value={qgStorage}>
