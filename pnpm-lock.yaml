@@ -32,6 +32,9 @@ dependencies:
   firebase:
     specifier: ^10.4.0
     version: 10.4.0
+  html5-qrcode:
+    specifier: ^2.3.8
+    version: 2.3.8
   next:
     specifier: 13.5.2
     version: 13.5.2(react-dom@18.2.0)(react@18.2.0)
@@ -2018,6 +2021,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+    dev: false
+
+  /html5-qrcode@2.3.8:
+    resolution: {integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==}
     dev: false
 
   /http-parser-js@0.5.8:
