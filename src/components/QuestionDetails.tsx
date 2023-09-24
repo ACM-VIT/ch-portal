@@ -9,6 +9,8 @@ import {
   PaperAirplaneIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+import Html5QrcodePlugin from "@/components/Html5QrcodeScannerPlugin";
+import { QrCodeIcon } from "@heroicons/react/20/solid";
 
 interface Question {
   hint: string | null;
@@ -31,6 +33,8 @@ export default function QuestionDetails({
   const [user, loading, error] = useAuthState(auth);
   const [answer, setAnswer] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [scans, setScans] = useState(true);
   const {
     hint,
     costOfHint,
@@ -50,6 +54,72 @@ export default function QuestionDetails({
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function openQR() {
+    setQrOpen(true);
+  }
+
+  function closeQR() {
+    setQrOpen(false);
+  }
+
+  async function onNewScanResult(decodedText: string, decodedResult: string) {
+    if (!scans) return;
+    closeQR();
+    setScans(false);
+    console.log(decodedText, decodedResult);
+    // Remove first 7 characters from decoded text
+    decodedText = decodedText.slice(7);
+    await qrSolve(decodedText);
+    setScans(true);
+  }
+
+  async function qrSolve(qrStuff: string) {
+    if (!user) return;
+    if (qrStuff === "") return notify("QR invalid");
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+    const token = await user.getIdToken();
+    const response = await fetch(`${backendUrl}/submissions/submit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        answer: qrStuff,
+        questionGroupId,
+        seq: seq,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+    if (data.isCorrect) {
+      notify("Correct answer");
+      const res2 = await fetch(`${backendUrl}/questiongroups`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const json = await res2.json();
+
+      localStorage.setItem("questionGroups", JSON.stringify(json));
+
+      const currentQuestionGroup = json.find(
+        (questionGroup: any) => questionGroup.id === questionGroupId
+      );
+
+      if (!currentQuestionGroup) {
+        router.push("/home");
+      }
+      // Wait for 2 seconds
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      window.location.reload();
+    } else {
+      notify("Incorrect answer");
+    }
   }
 
   async function buyHint() {
@@ -198,6 +268,63 @@ export default function QuestionDetails({
           </div>
         </Dialog>
       </Transition>
+
+      <Transition appear show={qrOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
+                    QR Scanner
+                  </Dialog.Title>
+                  <div className="mt-2 text-black">
+                    <Html5QrcodePlugin
+                      fps={10}
+                      qrbox={250}
+                      disableFlip={false}
+                      qrCodeSuccessCallback={onNewScanResult}
+                    />
+                  </div>
+
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeQR}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
       <div className="bg-neutral-900">
         <div className="flex flex-col gap-9">
           <div>
@@ -245,9 +372,18 @@ export default function QuestionDetails({
                 />
                 <button
                   onClick={handleSolve}
-                  className="flex flex-row justify-center items-center bg-red-700 rounded-md w-1/3"
+                  className="flex flex-row justify-center items-center bg-red-700 rounded-md w-1/3 p-3"
                 >
                   <PaperAirplaneIcon className="h-full w-7" />
+                </button>
+              </div>
+              <p className="text-center">or</p>
+              <div className="flex flex-row w-full">
+                <button
+                  className="flex flex-row gap-3 justify-center items-center bg-red-700 rounded-md w-full text-2xl p-2"
+                  onClick={openQR}
+                >
+                  <QrCodeIcon className="h-6 w-6" /> Scan QR
                 </button>
               </div>
             </div>
